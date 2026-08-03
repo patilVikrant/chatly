@@ -94,3 +94,28 @@
 .auth-footer a:hover {
   text-decoration: underline;
 }
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-icon:hover {
+  color: var(--color-navy);
+}

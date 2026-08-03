@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
@@ -61,14 +63,22 @@ const Login = () => {
             onChange={handleChange}
             required
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span
+              className="password-toggle-icon"
+              onClick={() => setShowPassword((prevValue) => !prevValue)}
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </span>
+          </div>
           {error && <p className="auth-error">{error}</p>}
           <button type="submit" disabled={loading} className="auth-button">
             {loading ? "Logging In..." : "Login"}

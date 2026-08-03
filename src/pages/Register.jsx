@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "./Auth.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Register = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
@@ -70,14 +72,22 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <span
+              className="password-toggle-icon"
+              onClick={() => setShowPassword((prevValue) => !prevValue)}
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </span>
+          </div>
           {error && <p className="auth-error">{error}</p>}
           <button type="submit" disabled={loading} className="auth-button">
             {loading ? "Registering..." : "Register"}
