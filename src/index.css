@@ -1,0 +1,29 @@
+:root {
+  --color-navy: #14213d;
+  --color-navy-light: #1f3a5f;
+  --color-amber: #fca311;
+  --color-amber-dark: #e0930a;
+  --color-bg: #f5f6fa;
+  --color-white: #ffffff;
+  --color-text: #14213d;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-online: #2ecc71;
+  --color-danger: #e63946;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
