@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
-const Sidebar = () => {
+const Sidebar = ({ selectedUser, onSelectUser }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  // console.log(selectedUser);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,15 +30,19 @@ const Sidebar = () => {
         <h2>Chatly</h2>
       </div>
       <div className="sidebar-users">
-        {loading && <p className="sidebar-status">Loading users...</p>}
+        {loading && <p className="status-text">Loading users...</p>}
 
         {!loading && users.length === 0 && (
-          <p className="sidebar-status">No other users yet</p>
+          <p className="status-text">No other users yet</p>
         )}
 
         {!loading &&
           users.map((user) => (
-            <div key={user._id} className="user-item">
+            <div
+              key={user._id}
+              className={`user-item ${selectedUser?._id === user._id ? "active" : ""}`}
+              onClick={() => onSelectUser(user)}
+            >
               <div className="user-avatar">
                 {user.username.charAt(0).toUpperCase()}
               </div>

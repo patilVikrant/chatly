@@ -1,12 +1,14 @@
+import { useState } from "react";
 import ChatWindow from "../components/ChatWindow";
 import Sidebar from "../components/Sidebar";
 import "./ChatPage.css";
 
 const ChatPage = () => {
+  const [selectedUser, setSelectedUser] = useState(null);
   return (
     <div className="chat-page d-flex">
-      <Sidebar />
-      <ChatWindow />
+      <Sidebar selectedUser={selectedUser} onSelectUser={setSelectedUser} />
+      <ChatWindow selectedUser={selectedUser} />
     </div>
   );
 };
