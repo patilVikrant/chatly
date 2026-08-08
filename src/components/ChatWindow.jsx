@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useSocket } from "../context/SocketContext";
+import { useAuth } from "../context/AuthContext";
 
 const ChatWindow = ({ selectedUser }) => {
   const [messages, setMessages] = useState([]);
@@ -8,6 +9,7 @@ const ChatWindow = ({ selectedUser }) => {
   const [newMessage, setNewMessage] = useState("");
 
   const socket = useSocket();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!selectedUser) return;
@@ -88,8 +90,13 @@ const ChatWindow = ({ selectedUser }) => {
         )}
         {!loading &&
           messages.map((msg) => (
-            <div key={msg._id}>
-              {msg.sender}: {msg.message}
+            <div
+              key={msg._id}
+              className={`message-row ${msg.sender === user.id ? "sent" : "received"}`}
+            >
+              <div className="message-bubble">
+                <p className="message-text">{msg.message}</p>
+              </div>
             </div>
           ))}
       </div>

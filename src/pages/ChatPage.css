@@ -147,3 +147,40 @@
 .chat-input-bar button:hover {
   background-color: var(--color-amber-dark);
 }
+
+.message-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.message-row.sent {
+  justify-content: flex-end;
+}
+
+.message-row.received {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 65%;
+  padding: 10px 14px;
+  border-radius: 16px;
+}
+
+.message-row.sent .message-bubble {
+  background-color: var(--color-amber);
+  border-bottom-right-radius: 4px;
+}
+
+.message-row.received .message-bubble {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 4px;
+}
+
+.message-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-navy);
+  word-wrap: break-word;
+}
