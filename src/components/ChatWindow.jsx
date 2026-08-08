@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { useSocket } from "../context/SocketContext";
 
 const ChatWindow = ({ selectedUser }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+
+  const socket = useSocket();
 
   useEffect(() => {
     if (!selectedUser) return;
@@ -25,6 +29,41 @@ const ChatWindow = ({ selectedUser }) => {
 
     fetchMessages();
   }, [selectedUser]);
+
+  useEffect(() => {
+    if (!socket || !selectedUser) return;
+
+    socket.on("receive_message", (payload) => {
+      if (payload.sender === selectedUser._id) {
+        setMessages((prevValue) => [...prevValue, payload]);
+      }
+    });
+
+    socket.on("message_sent", (payload) => {
+      if (payload.receiver === selectedUser._id) {
+        setMessages((prevValue) => [...prevValue, payload]);
+      }
+    });
+
+    return () => {
+      socket.off("receive_message");
+      socket.off("message_sent");
+    };
+  }, [socket, selectedUser]);
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !socket) return;
+
+    // console.log(newMessage);
+
+    socket.emit("send_message", {
+      receiverId: selectedUser._id,
+      message: newMessage,
+    });
+
+    setNewMessage("");
+  };
 
   if (!selectedUser) {
     return (
@@ -54,6 +93,15 @@ const ChatWindow = ({ selectedUser }) => {
             </div>
           ))}
       </div>
+      <form className="chat-input-bar" onSubmit={handleSend}>
+        <input
+          type="text"
+          placeholder="Type a message..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 };

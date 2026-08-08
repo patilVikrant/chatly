@@ -112,3 +112,38 @@
   color: var(--color-text-muted);
   font-size: 15px;
 }
+
+.chat-input-bar {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-white);
+}
+
+.chat-input-bar input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.chat-input-bar input:focus {
+  border-color: var(--color-amber);
+}
+
+.chat-input-bar button {
+  background-color: var(--color-amber);
+  color: var(--color-navy);
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-input-bar button:hover {
+  background-color: var(--color-amber-dark);
+}
