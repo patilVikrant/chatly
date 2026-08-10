@@ -96,6 +96,12 @@ const ChatWindow = ({ selectedUser }) => {
             >
               <div className="message-bubble">
                 <p className="message-text">{msg.message}</p>
+                <span className="message-time">
+                  {new Date(msg.createdAt).toLocaleTimeString([], {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                </span>
               </div>
             </div>
           ))}

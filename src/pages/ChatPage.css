@@ -184,3 +184,15 @@
   color: var(--color-navy);
   word-wrap: break-word;
 }
+
+.message-time {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  text-align: right;
+}
+
+.message-row.received .message-time {
+  color: rgba(20, 33, 61, 0.5);
+}
