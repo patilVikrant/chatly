@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
 import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
@@ -7,9 +7,13 @@ const ChatWindow = ({ selectedUser }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [isOtherUserTyping, setIsOtherUserTyping] = useState(false);
 
   const socket = useSocket();
   const { user } = useAuth();
+
+  const isTypingRef = useRef(false);
+  const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
     if (!selectedUser) return;
@@ -47,11 +51,44 @@ const ChatWindow = ({ selectedUser }) => {
       }
     });
 
+    socket.on("user_typing", (payload) => {
+      if (payload.senderId === selectedUser._id) {
+        setIsOtherUserTyping(true);
+      }
+    });
+
+    socket.on("user_stop_typing", (payload) => {
+      if (payload.senderId === selectedUser._id) {
+        setIsOtherUserTyping(false);
+      }
+    });
+
     return () => {
       socket.off("receive_message");
       socket.off("message_sent");
+      socket.off("user_typing");
+      socket.off("user_stop_typing");
+      setIsOtherUserTyping(false);
     };
   }, [socket, selectedUser]);
+
+  const handleTyping = (e) => {
+    setNewMessage(e.target.value);
+
+    if (!socket || !selectedUser) return;
+
+    if (!isTypingRef.current) {
+      socket.emit("typing", selectedUser._id);
+      isTypingRef.current = true;
+    }
+
+    clearTimeout(typingTimeoutRef.current);
+
+    typingTimeoutRef.current = setTimeout(() => {
+      socket.emit("stop_typing", selectedUser._id);
+      isTypingRef.current = false;
+    }, 2000);
+  };
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -63,6 +100,10 @@ const ChatWindow = ({ selectedUser }) => {
       receiverId: selectedUser._id,
       message: newMessage,
     });
+
+    clearTimeout(typingTimeoutRef.current);
+    socket.emit("stop_typing", selectedUser._id);
+    isTypingRef.current = false;
 
     setNewMessage("");
   };
@@ -105,13 +146,18 @@ const ChatWindow = ({ selectedUser }) => {
               </div>
             </div>
           ))}
+        {isOtherUserTyping && (
+          <p className="typing-indicator">
+            {selectedUser.username} is typing...
+          </p>
+        )}
       </div>
       <form className="chat-input-bar" onSubmit={handleSend}>
         <input
           type="text"
           placeholder="Type a message..."
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={handleTyping}
         />
         <button type="submit">Send</button>
       </form>

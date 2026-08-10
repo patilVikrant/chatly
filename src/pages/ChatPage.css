@@ -196,3 +196,10 @@
 .message-row.received .message-time {
   color: rgba(20, 33, 61, 0.5);
 }
+
+.typing-indicator {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  padding: 4px 0;
+}
