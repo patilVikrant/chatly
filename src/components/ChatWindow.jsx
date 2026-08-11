@@ -43,6 +43,8 @@ const ChatWindow = ({ selectedUser }) => {
     socket.on("receive_message", (payload) => {
       if (payload.sender === selectedUser._id) {
         setMessages((prevValue) => [...prevValue, payload]);
+
+        socket.emit("mark_as_read", selectedUser._id);
       }
     });
 

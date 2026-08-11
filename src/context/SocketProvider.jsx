@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (!token) return;
 
-    const newSocket = io("https://chatly-backend-one.vercel.app", {
+    const newSocket = io("https://chatly-backend-651h.onrender.com", {
       auth: {
         token: token,
       },
