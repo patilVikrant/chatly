@@ -16,7 +16,7 @@ const ChatWindow = ({ selectedUser }) => {
   const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
-    if (!selectedUser) return;
+    if (!socket || !selectedUser) return;
 
     const fetchMessages = async () => {
       setLoading(true);
@@ -30,11 +30,12 @@ const ChatWindow = ({ selectedUser }) => {
         );
       } finally {
         setLoading(false);
+        socket.emit("mark_as_read", selectedUser._id);
       }
     };
 
     fetchMessages();
-  }, [selectedUser]);
+  }, [socket, selectedUser]);
 
   useEffect(() => {
     if (!socket || !selectedUser) return;
@@ -63,14 +64,25 @@ const ChatWindow = ({ selectedUser }) => {
       }
     });
 
+    socket.on("messages_read", (payload) => {
+      if (payload.readerId === selectedUser._id) {
+        setMessages((prevValue) =>
+          prevValue.map((msg) =>
+            msg.sender === user.id ? { ...msg, isRead: true } : msg,
+          ),
+        );
+      }
+    });
+
     return () => {
       socket.off("receive_message");
       socket.off("message_sent");
       socket.off("user_typing");
       socket.off("user_stop_typing");
+      socket.off("messages_read");
       setIsOtherUserTyping(false);
     };
-  }, [socket, selectedUser]);
+  }, [socket, selectedUser, user]);
 
   const handleTyping = (e) => {
     setNewMessage(e.target.value);
@@ -137,11 +149,20 @@ const ChatWindow = ({ selectedUser }) => {
             >
               <div className="message-bubble">
                 <p className="message-text">{msg.message}</p>
-                <span className="message-time">
-                  {new Date(msg.createdAt).toLocaleTimeString([], {
-                    hour: "numeric",
-                    minute: "2-digit",
-                  })}
+                <span className="message-meta">
+                  <span className="message-time">
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                  {msg.sender === user.id && (
+                    <span
+                      className={`message-ticks ${msg.isRead ? "read" : ""}`}
+                    >
+                      {msg.isRead ? "✓✓" : "✓"}
+                    </span>
+                  )}
                 </span>
               </div>
             </div>

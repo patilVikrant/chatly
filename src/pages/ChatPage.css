@@ -190,7 +190,6 @@
   font-size: 11px;
   color: var(--color-text-muted);
   margin-top: 4px;
-  text-align: right;
 }
 
 .message-row.received .message-time {
@@ -202,4 +201,21 @@
   font-style: italic;
   color: var(--color-text-muted);
   padding: 4px 0;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.message-ticks {
+  font-size: 12px;
+  color: rgba(20, 33, 61, 0.5);
+}
+
+.message-ticks.read {
+  color: #4fc3f7;
 }
