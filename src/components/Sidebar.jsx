@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { useOnlineUsers } from "../context/OnlineUsersContext";
 
 const Sidebar = ({ selectedUser, onSelectUser }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   // console.log(selectedUser);
+  const { isUserOnline } = useOnlineUsers();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -43,8 +45,11 @@ const Sidebar = ({ selectedUser, onSelectUser }) => {
               className={`user-item ${selectedUser?._id === user._id ? "active" : ""}`}
               onClick={() => onSelectUser(user)}
             >
-              <div className="user-avatar">
-                {user.username.charAt(0).toUpperCase()}
+              <div className="user-avatar-wrapper">
+                <div className="user-avatar">
+                  {user.username.charAt(0).toUpperCase()}
+                </div>
+                {isUserOnline(user._id) && <span className="online-dot" />}
               </div>
               <span className="user-name">{user.username}</span>
             </div>

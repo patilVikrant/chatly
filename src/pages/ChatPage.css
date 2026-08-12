@@ -219,3 +219,19 @@
 .message-ticks.read {
   color: #4fc3f7;
 }
+
+.user-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-online);
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+}

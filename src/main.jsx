@@ -6,12 +6,15 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import { SocketProvider } from "./context/SocketProvider.jsx";
+import { OnlineUsersProvider } from "./context/OnlineUsersProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <SocketProvider>
-        <App />
+        <OnlineUsersProvider>
+          <App />
+        </OnlineUsersProvider>
       </SocketProvider>
     </AuthProvider>
   </StrictMode>,
