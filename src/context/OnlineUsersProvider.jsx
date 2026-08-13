@@ -11,7 +11,7 @@ export const OnlineUsersProvider = ({ children }) => {
 
     // initial list when a user connects
     socket.on("online_users", (users) => {
-      console.log("online_users payload received:", users);
+      // console.log("online_users payload received:", users);
       setOnlineUsers(new Set(users));
     });
 

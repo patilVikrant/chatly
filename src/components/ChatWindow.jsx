@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
 import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
+import EmojiPicker from "emoji-picker-react";
 
 const ChatWindow = ({ selectedUser }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [isOtherUserTyping, setIsOtherUserTyping] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const socket = useSocket();
   const { user } = useAuth();
@@ -176,6 +178,24 @@ const ChatWindow = ({ selectedUser }) => {
         )}
       </div>
       <form className="chat-input-bar" onSubmit={handleSend}>
+        <div className="emoji-wrapper">
+          <button
+            type="button"
+            className="emoji-toggle-btn"
+            onClick={() => setShowEmojiPicker((prevValue) => !prevValue)}
+          >
+            😊
+          </button>
+          {showEmojiPicker && (
+            <div className="emoji-picker-popup">
+              <EmojiPicker
+                onEmojiClick={(emojiData) => {
+                  setNewMessage((prevValue) => prevValue + emojiData.emoji);
+                }}
+              />
+            </div>
+          )}
+        </div>
         <input
           type="text"
           placeholder="Type a message..."
