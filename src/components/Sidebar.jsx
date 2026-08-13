@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useOnlineUsers } from "../context/OnlineUsersContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ selectedUser, onSelectUser }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, setUser, setToken } = useAuth();
   // console.log(selectedUser);
   const { isUserOnline } = useOnlineUsers();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setToken(null);
+    setUser(null);
+
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,6 +69,17 @@ const Sidebar = ({ selectedUser, onSelectUser }) => {
               <span className="user-name">{user.username}</span>
             </div>
           ))}
+      </div>
+      <div className="sidebar-footer">
+        <div className="sidebar-footer-user">
+          <div className="user-avatar">
+            {user?.username?.charAt(0).toUpperCase()}
+          </div>
+          <span className="user-name">{user?.username}</span>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );
