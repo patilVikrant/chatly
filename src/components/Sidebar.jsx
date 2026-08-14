@@ -77,9 +77,17 @@ const Sidebar = ({ selectedUser, onSelectUser }) => {
           </div>
           <span className="user-name">{user?.username}</span>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
+        <div className="sidebar-footer-actions">
+          <button
+            className="settings-btn"
+            onClick={() => navigate("/settings")}
+          >
+            ⚙️
+          </button>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
