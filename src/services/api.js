@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://chatly-backend-651h.onrender.com",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
 api.interceptors.request.use((config) => {
