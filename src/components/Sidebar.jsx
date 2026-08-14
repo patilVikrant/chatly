@@ -3,6 +3,7 @@ import api from "../services/api";
 import { useOnlineUsers } from "../context/OnlineUsersContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import chatlyLogo from "../assets/chatly-logo.svg";
 
 const Sidebar = ({ selectedUser, onSelectUser }) => {
   const [users, setUsers] = useState([]);
@@ -44,6 +45,7 @@ const Sidebar = ({ selectedUser, onSelectUser }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
+        <img src={chatlyLogo} alt="Chatly logo" className="app-logo" />
         <h2>Chatly</h2>
       </div>
       <div className="sidebar-users">
