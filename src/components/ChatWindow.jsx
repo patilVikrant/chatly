@@ -4,7 +4,7 @@ import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
 import EmojiPicker from "emoji-picker-react";
 
-const ChatWindow = ({ selectedUser }) => {
+const ChatWindow = ({ selectedUser, onBack }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -135,6 +135,9 @@ const ChatWindow = ({ selectedUser }) => {
   return (
     <div className="chat-window">
       <div className="chat-header">
+        <button className="back-btn-mobile" onClick={onBack}>
+          ←
+        </button>
         <div className="user-avatar">
           {selectedUser.username.charAt(0).toUpperCase()}
         </div>
